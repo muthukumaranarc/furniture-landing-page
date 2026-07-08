@@ -76,20 +76,33 @@ const hotspots = [
 function Header({ cartCount }) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
+  // Prevent scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileOpen])
+
   return (
     <header className="header">
       <div className="container header-inner">
         <a href="#" className="logo">Panto</a>
+        {mobileOpen && <div className="nav-overlay" onClick={() => setMobileOpen(false)}></div>}
         <nav className={`nav ${mobileOpen ? 'open' : ''}`}>
           <div className="nav-item-dropdown">
-            <a href="#" className="nav-link">Furniture</a>
+            <a href="#" className="nav-link" onClick={() => setMobileOpen(false)}>Furniture</a>
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
               <path d="M1 1L5 5L9 1" />
             </svg>
           </div>
-          <a href="#" className="nav-link">Shop</a>
-          <a href="#" className="nav-link">About Us</a>
-          <a href="#" className="nav-link">Contact</a>
+          <a href="#" className="nav-link" onClick={() => setMobileOpen(false)}>Shop</a>
+          <a href="#" className="nav-link" onClick={() => setMobileOpen(false)}>About Us</a>
+          <a href="#" className="nav-link" onClick={() => setMobileOpen(false)}>Contact</a>
         </nav>
         <div className="header-actions">
           <div className="cart-icon-container">
@@ -100,7 +113,7 @@ function Header({ cartCount }) {
             </svg>
             <span className="cart-badge">{cartCount}</span>
           </div>
-          <button className="mobile-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
+          <button className="mobile-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu" aria-expanded={mobileOpen}>
             <span className={`bar ${mobileOpen ? 'open' : ''}`}></span>
             <span className={`bar ${mobileOpen ? 'open' : ''}`}></span>
             <span className={`bar ${mobileOpen ? 'open' : ''}`}></span>
@@ -118,11 +131,11 @@ function Hero() {
     <section className="hero-section">
       <div className="container hero-container">
         <h1 className="hero-title">
-          Make Your Interior More<br />
+          Make Your Interior More<br className="desktop-br" />
           Minimalistic & Modern
         </h1>
         <p className="hero-desc">
-          Turn your room with panto into a lot more minimalist<br />
+          Turn your room with panto into a lot more minimalist<br className="desktop-br" />
           and modern with ease and speed
         </p>
         <form className="hero-search" onSubmit={e => e.preventDefault()}>
@@ -353,9 +366,32 @@ function Materials() {
 function Testimonials() {
   const [current, setCurrent] = useState(0)
   const trackRef = useRef(null)
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
 
   const prev = () => setCurrent(c => (c === 0 ? testimonials.length - 1 : c - 1))
   const next = () => setCurrent(c => (c === testimonials.length - 1 ? 0 : c + 1))
+
+  const handleTouchStart = (e) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+    if (isLeftSwipe) {
+      next()
+    } else if (isRightSwipe) {
+      prev()
+    }
+  }
 
   return (
     <section className="testimonials-section">
@@ -370,7 +406,12 @@ function Testimonials() {
             </svg>
           </button>
 
-          <div className="testimonial-slider-viewport">
+          <div
+            className="testimonial-slider-viewport"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <div
               className="testimonial-track"
               ref={trackRef}
@@ -402,6 +443,18 @@ function Testimonials() {
               <path d="M1 13L7 7L1 1" />
             </svg>
           </button>
+        </div>
+
+        {/* Carousel Pagination Dots */}
+        <div className="testimonial-dots">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              className={`testimonial-dot ${current === index ? 'active' : ''}`}
+              onClick={() => setCurrent(index)}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
       </div>
     </section>
