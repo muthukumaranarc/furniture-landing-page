@@ -1,27 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --bg-primary: #0f0f0f;
-  --bg-secondary: #1a1a1a;
-  --bg-card: #1e1e1e;
-  --bg-card-hover: #252525;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --text-muted: #6b6b6b;
-  --accent: #e88d3b;
-  --accent-hover: #d47a2a;
-  --accent-light: rgba(232, 141, 59, 0.1);
-  --border: #2a2a2a;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7f7f7;
+  --bg-card: #ffffff;
+  --bg-card-hover: #ffffff;
+  --text-primary: #1e1e1e;
+  --text-secondary: #585858;
+  --text-muted: #a1a1a1;
+  --accent: #e58411;
+  --accent-hover: #cb720e;
+  --accent-light: rgba(229, 132, 17, 0.1);
+  --border: #e2e2e2;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
   --radius: 12px;
   --radius-lg: 20px;
   --max-width: 1200px;
-  --header-height: 80px;
+  --header-height: 90px;
   --transition: all 0.3s ease;
+  --hero-bg: #1e2829;
 
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  color-scheme: dark;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color-scheme: light;
   color: var(--text-secondary);
   background: var(--bg-primary);
   -webkit-font-smoothing: antialiased;
@@ -43,6 +44,7 @@ html {
 body {
   min-height: 100vh;
   overflow-x: hidden;
+  background-color: var(--bg-primary);
 }
 
 #root {
@@ -84,11 +86,11 @@ button {
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 p {
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 /* Scrollbar styling */
@@ -97,7 +99,7 @@ p {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
